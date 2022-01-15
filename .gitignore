@@ -1,0 +1,4 @@
+# Project exclude paths
+/modules/my-super-service/target/
+/modules/my-super-service-impl/target/
+/modules/my-thin-client/target/
