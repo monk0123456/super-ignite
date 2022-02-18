@@ -4,21 +4,19 @@ import java.io.Serializable;
 
 public class MyUrlToken implements Serializable {
     private static final long serialVersionUID = 7939131112148132767L;
-
     private String userToken;
     private String url;
 
-    public MyUrlToken(final String userToken, final String url)
-    {
+    public MyUrlToken(String userToken, String url) {
         this.url = url;
         this.userToken = userToken;
     }
 
-    public MyUrlToken()
-    {}
+    public MyUrlToken() {
+    }
 
     public String getUserToken() {
-        return userToken;
+        return this.userToken;
     }
 
     public void setUserToken(String userToken) {
@@ -26,7 +24,7 @@ public class MyUrlToken implements Serializable {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {

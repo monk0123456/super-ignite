@@ -8,4 +8,8 @@ import cn.mysuper.model.MyUrlToken;
 public interface IMyConnection {
 
     public MyUrlToken getToken(String url);
+
+    public Boolean isJdbcThin(String var1);
+
+    public Boolean hasConnPermission(String var1);
 }

@@ -33,12 +33,12 @@ public class IgniteNoopScheduleProcessor extends IgniteScheduleProcessorAdapter 
     }
 
     /** {@inheritDoc} */
-    @Override public SchedulerFuture<?> schedule(Runnable c, String pattern) {
+    @Override public SchedulerFuture<?> schedule(String name, Runnable c, String pattern) {
         throw processorException();
     }
 
     /** {@inheritDoc} */
-    @Override public <R> SchedulerFuture<R> schedule(Callable<R> c, String pattern) {
+    @Override public <R> SchedulerFuture<R> schedule(String name, Callable<R> c, String pattern) {
         throw processorException();
     }
 

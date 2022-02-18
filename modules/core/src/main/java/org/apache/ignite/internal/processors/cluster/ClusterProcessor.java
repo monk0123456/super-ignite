@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.apache.ignite.IgniteCheckedException;
 import org.apache.ignite.IgniteLogger;
 import org.apache.ignite.IgniteSystemProperties;
+import org.apache.ignite.Ignition;
 import org.apache.ignite.cluster.ClusterNode;
 import org.apache.ignite.events.ClusterTagUpdatedEvent;
 import org.apache.ignite.events.DiscoveryEvent;
@@ -76,6 +77,7 @@ import org.apache.ignite.lang.IgnitePredicate;
 import org.apache.ignite.lang.IgniteUuid;
 import org.apache.ignite.marshaller.jdk.JdkMarshaller;
 import org.apache.ignite.mxbean.IgniteClusterMXBean;
+import org.apache.ignite.rpc.service.MySuperSqlFuncService;
 import org.apache.ignite.spi.discovery.DiscoveryDataBag;
 import org.apache.ignite.spi.discovery.DiscoveryDataBag.GridDiscoveryData;
 import org.apache.ignite.spi.discovery.DiscoveryMetricsProvider;
@@ -774,6 +776,13 @@ public class ClusterProcessor extends GridProcessorAdapter implements Distribute
             catch (Throwable e) {
                 U.error(log, "Failed to register MBean for cluster: ", e);
             }
+        }
+
+        try {
+            MySuperSqlFuncService mySuperSqlFuncService = new MySuperSqlFuncService(Ignition.ignite());
+            mySuperSqlFuncService.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

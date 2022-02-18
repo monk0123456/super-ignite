@@ -5,6 +5,8 @@ package cn.mysuper.service;
  * */
 public interface IMyPlusFunc {
 
+    public Boolean hasConnPermission(String var1);
+
     /**
      * 获取定时任务详细信息
      * */
@@ -21,4 +23,6 @@ public interface IMyPlusFunc {
      * 场景调用
      * */
     public Object myInvoke(final String methodName, final Object... ps);
+
+    public String superSql(String var1, byte[] var2);
 }

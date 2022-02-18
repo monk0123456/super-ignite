@@ -257,6 +257,39 @@ public class JdbcThinConnection implements Connection {
     /** Marshaller context. */
     private final JdbcMarshallerContext marshCtx;
 
+    /** 添加 userToken */
+    private String userToken;
+
+    /** 添加 group_id */
+    private Long group_id;
+
+    /** 是否是 */
+    private Boolean isThinJdbc = false;
+
+    public Long getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(Long group_id) {
+        this.group_id = group_id;
+    }
+
+    public Boolean getThinJdbc() {
+        return isThinJdbc;
+    }
+
+    public void setThinJdbc(Boolean thinJdbc) {
+        isThinJdbc = thinJdbc;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
     /**
      * Creates new connection.
      *

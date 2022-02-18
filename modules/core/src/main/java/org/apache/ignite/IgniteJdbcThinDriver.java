@@ -24,11 +24,16 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import cn.myservice.MyConnectionService;
+import cn.mysuper.model.MyUrlToken;
+import cn.mysuper.service.IMyConnection;
 import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.internal.IgniteVersionUtils;
 import org.apache.ignite.internal.jdbc.thin.ConnectionPropertiesImpl;
 import org.apache.ignite.internal.jdbc.thin.JdbcThinConnection;
 import org.apache.ignite.internal.jdbc.thin.JdbcThinUtils;
+import org.apache.ignite.rpc.client.MySuperSqlFuncClient;
 
 /**
  * JDBC driver thin implementation for In-Memory Data Grid.
@@ -142,15 +147,80 @@ public class IgniteJdbcThinDriver implements Driver {
     private static final int MINOR_VER = IgniteVersionUtils.VER.minor();
 
     /** {@inheritDoc} */
+//    @Override public Connection connect(String url, Properties props) throws SQLException {
+//        if (!acceptsURL(url))
+//            return null;
+//
+//        ConnectionPropertiesImpl connProps = new ConnectionPropertiesImpl();
+//
+//        connProps.init(url, props);
+//
+//        return new JdbcThinConnection(connProps);
+//    }
+
     @Override public Connection connect(String url, Properties props) throws SQLException {
-        if (!acceptsURL(url))
+        System.out.println("*******************************");
+        System.out.println(url);
+        System.out.println("*******************************");
+        MyUrlToken myUrlToken = null;
+        Boolean isThinJdbc = false;
+        long my_group_id = -1L;
+        MyConnectionService myConnectionService = MyConnectionService.getInstance();
+        if (myConnectionService != null) {
+            IMyConnection myConnection = myConnectionService.getMyConnection();
+            if (myConnection != null) {
+                isThinJdbc = myConnection.isJdbcThin(url);
+                myUrlToken = myConnection.getToken(url);
+
+                if(myUrlToken != null)
+                {
+                    long group_id = MySuperSqlFuncClient.getGroupId(myUrlToken.getUserToken());
+                    if (group_id == -1L)
+                    {
+                        try {
+                            throw new Exception("userToken 没有连接权限！");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                    else
+                    {
+                        my_group_id = group_id;
+                    }
+                }
+            }
+        }
+
+        if (isThinJdbc && my_group_id == -1L)
+        {
+            try {
+                throw new Exception("userToken 没有连接权限！");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        if (myUrlToken == null) {
+            myUrlToken = new MyUrlToken("", url);
+        }
+
+        if (!acceptsURL(myUrlToken.getUrl()))
             return null;
 
         ConnectionPropertiesImpl connProps = new ConnectionPropertiesImpl();
 
-        connProps.init(url, props);
+        connProps.init(myUrlToken.getUrl(), props);
 
-        return new JdbcThinConnection(connProps);
+        JdbcThinConnection jdbcThinConnection = new JdbcThinConnection(connProps);
+        jdbcThinConnection.setThinJdbc(isThinJdbc);
+        if (myUrlToken.getUserToken() != null && !myUrlToken.getUserToken().equals("")) {
+            jdbcThinConnection.setUserToken(myUrlToken.getUserToken());
+            jdbcThinConnection.setGroup_id(my_group_id);
+        }
+
+        return jdbcThinConnection;
     }
 
     /** {@inheritDoc} */

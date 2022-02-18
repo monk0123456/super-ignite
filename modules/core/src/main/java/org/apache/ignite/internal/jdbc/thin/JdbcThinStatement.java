@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+//import cn.myservice.MyConnectionService;
+//import cn.mysuper.service.IMyConnection;
 import org.apache.ignite.cache.query.Query;
 import org.apache.ignite.internal.processors.cache.query.IgniteQueryErrorCode;
 import org.apache.ignite.internal.processors.odbc.ClientListenerResponse;
@@ -55,6 +58,7 @@ import org.apache.ignite.internal.sql.SqlParser;
 import org.apache.ignite.internal.sql.command.SqlCommand;
 import org.apache.ignite.internal.sql.command.SqlSetStreamingCommand;
 import org.apache.ignite.internal.util.typedef.F;
+import org.tools.MyLineToBinary;
 
 import static java.sql.ResultSet.CONCUR_READ_ONLY;
 import static java.sql.ResultSet.FETCH_FORWARD;
@@ -133,8 +137,45 @@ public class JdbcThinStatement implements Statement {
         this.schema = schema;
     }
 
+    /**
+     * 输入 sql 转换为自己的 sql
+     * */
+    public String myExecuteQuery(String sql) throws SQLException {
+        if (this.conn.getThinJdbc()) {
+            if (this.conn.getUserToken() != null && !this.conn.getUserToken().trim().equals("")) {
+                String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
+                //String mysql0 = "select my_line_inary(?)";
+                List<Object> lst = new ArrayList<Object>();
+                lst.add(MyLineToBinary.objToBytes(sql));
+                execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
+
+                ResultSet rs = getResultSet();
+
+                if (rs == null)
+                    throw new SQLException("The query isn't SELECT query: " + sql, SqlStateCode.PARSING_EXCEPTION);
+
+                String mysql = "";
+                while (rs.next()) {
+                    mysql = rs.getString(1);
+                }
+                rs.close();
+
+                return mysql;
+            }
+            else
+            {
+                return sql;
+            }
+        }
+        return sql;
+    }
+
     /** {@inheritDoc} */
-    @Override public ResultSet executeQuery(String sql) throws SQLException {
+    @Override public ResultSet executeQuery(String sql0) throws SQLException {
+        /**
+         * 执行 sql
+         * */
+        String sql = myExecuteQuery(sql0);
         execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, sql, null);
 
         ResultSet rs = getResultSet();
@@ -375,7 +416,9 @@ public class JdbcThinStatement implements Statement {
     }
 
     /** {@inheritDoc} */
-    @Override public int executeUpdate(String sql) throws SQLException {
+    @Override public int executeUpdate(String sql0) throws SQLException {
+        /*
+        String sql = myExecuteQuery(sql0);
         execute0(JdbcStatementType.UPDATE_STMT_TYPE, sql, null);
 
         int res = getUpdateCount();
@@ -384,6 +427,9 @@ public class JdbcThinStatement implements Statement {
             throw new SQLException("The query is not DML statememt: " + sql);
 
         return res;
+         */
+        execute(sql0);
+        return 0;
     }
 
     /** {@inheritDoc} */
@@ -552,7 +598,8 @@ public class JdbcThinStatement implements Statement {
     }
 
     /** {@inheritDoc} */
-    @Override public boolean execute(String sql) throws SQLException {
+    @Override public boolean execute(String sql0) throws SQLException {
+        String sql = myExecuteQuery(sql0);
         ensureNotClosed();
 
         execute0(JdbcStatementType.ANY_STATEMENT_TYPE, sql, null);
@@ -642,7 +689,8 @@ public class JdbcThinStatement implements Statement {
     }
 
     /** {@inheritDoc} */
-    @Override public void addBatch(String sql) throws SQLException {
+    @Override public void addBatch(String sql0) throws SQLException {
+        String sql = myExecuteQuery(sql0);
         ensureNotClosed();
 
         checkStatementEligibleForBatching(sql);

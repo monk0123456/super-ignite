@@ -618,6 +618,85 @@ public class IgniteConfiguration {
     public ShutdownPolicy shutdown = DFLT_SHUTDOWN_POLICY;
 
     /**
+     * 扩展的属性
+     * */
+    public static final boolean DATA_SET = true;
+
+    public static final String SUPER_ADMIN = "root";
+
+    public static final String SUPER_PASSWORD = "root";
+
+    /** 是否允许 data set */
+    private boolean dataSetEnabled = DATA_SET;
+
+    /** 超级管理员 */
+    private String super_admin = SUPER_ADMIN;
+
+    /** 超级管理员的密码 */
+    private String super_password = SUPER_PASSWORD;
+
+    /** 超级管理员用户组 token */
+    private String root_token = "";
+
+    /** 服务的 port */
+    private int port = -1;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    private Map<String, TableTemplateConfiguration> templateCfg;
+
+    public boolean isDataSetEnabled() {
+        return dataSetEnabled;
+    }
+
+    public IgniteConfiguration setDataSetEnabled(boolean dataSetEnabled) {
+        this.dataSetEnabled = dataSetEnabled;
+        return this;
+    }
+
+    public String getSuper_admin() {
+        return super_admin;
+    }
+
+    public IgniteConfiguration setSuper_admin(String super_admin) {
+        this.super_admin = super_admin;
+        return this;
+    }
+
+    public String getSuper_password() {
+        return super_password;
+    }
+
+    public IgniteConfiguration setSuper_password(String super_password) {
+        this.super_password = super_password;
+        return this;
+    }
+
+    public String getRoot_token() {
+        return root_token;
+    }
+
+    public IgniteConfiguration setRoot_token(String root_token) {
+        this.root_token = root_token;
+        return this;
+    }
+
+    public Map<String, TableTemplateConfiguration> getTemplateConfiguration() {
+        return templateCfg;
+    }
+
+    public IgniteConfiguration setTemplateConfiguration(Map<String, TableTemplateConfiguration> templateCfg) {
+        this.templateCfg = templateCfg;
+        return this;
+    }
+
+    /**
      * Creates valid grid configuration with all default values.
      */
     public IgniteConfiguration() {
@@ -632,6 +711,13 @@ public class IgniteConfiguration {
      */
     public IgniteConfiguration(IgniteConfiguration cfg) {
         assert cfg != null;
+
+        // 扩展
+        dataSetEnabled = cfg.isDataSetEnabled();
+        super_admin = cfg.getSuper_admin();
+        super_password = cfg.getSuper_password();
+        root_token = cfg.getRoot_token();
+        templateCfg = cfg.getTemplateConfiguration();
 
         // SPIs.
         discoSpi = cfg.getDiscoverySpi();
@@ -3216,7 +3302,7 @@ public class IgniteConfiguration {
      * @see CacheStoreSessionListener
      */
     public IgniteConfiguration setCacheStoreSessionListenerFactories(
-        Factory<CacheStoreSessionListener>... storeSesLsnrs) {
+            Factory<CacheStoreSessionListener>... storeSesLsnrs) {
         this.storeSesLsnrs = storeSesLsnrs;
 
         return this;

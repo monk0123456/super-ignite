@@ -65,4 +65,16 @@ public class MyPlusFunc implements Serializable {
     {
         return myPlusFunc.myInvoke(methodName, ps);
     }
+
+    public static String superSql(String userToken, byte[] sql) {
+        return myPlusFunc.superSql(userToken, sql);
+    }
+
+    public static String my_line_inary(byte[] bytes) {
+        return (String)MyLineToBinary.restore(bytes);
+    }
+
+    public static Boolean hasConnPermission(String userToken) {
+        return myPlusFunc.hasConnPermission(userToken);
+    }
 }

@@ -12,4 +12,14 @@ public class MyConnectionImpl implements IMyConnection {
     public MyUrlToken getToken(String s) {
         return MyLexical.my_url_tokens(s);
     }
+
+    @Override
+    public Boolean isJdbcThin(String url) {
+        return MyLexical.isJdbcThin(url);
+    }
+
+    @Override
+    public Boolean hasConnPermission(String url) {
+        return MyLexical.hasConnPermission(url);
+    }
 }

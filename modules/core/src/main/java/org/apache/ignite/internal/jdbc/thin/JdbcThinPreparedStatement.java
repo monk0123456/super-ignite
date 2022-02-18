@@ -66,10 +66,10 @@ public class JdbcThinPreparedStatement extends JdbcThinStatement implements Prep
      * @param resHoldability Result set holdability.
      * @param schema Schema name.
      */
-    JdbcThinPreparedStatement(JdbcThinConnection conn, String sql, int resHoldability, String schema) {
+    JdbcThinPreparedStatement(JdbcThinConnection conn, String sql0, int resHoldability, String schema) throws SQLException {
         super(conn, resHoldability, schema);
-
-        this.sql = sql;
+        // 转换 sql 语句
+        this.sql = super.myExecuteQuery(sql0);
     }
 
     /** {@inheritDoc} */

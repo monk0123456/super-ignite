@@ -155,4 +155,9 @@ public interface SchedulerFuture<R> extends IgniteFuture<R> {
      * @throws IgniteException {@inheritDoc}
      */
     @Override public R get(long timeout, TimeUnit unit);
+
+    /**
+     * get task
+     * */
+    public <R> Callable<R> getTask();
 }
