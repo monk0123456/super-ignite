@@ -421,6 +421,7 @@ class ScheduleFutureImpl<R> implements SchedulerFuture<R> {
         return pat;
     }
 
+    @Override
     public Callable<R> getTask() {
         return task;
     }
@@ -824,6 +825,7 @@ class ScheduleFutureImpl<R> implements SchedulerFuture<R> {
             return ref.pattern();
         }
 
+        @Override
         public Callable<R> getTask() {
             return ref.getTask();
         }
