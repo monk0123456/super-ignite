@@ -29,6 +29,7 @@ import org.apache.ignite.internal.processors.odbc.jdbc.JdbcThinFeature;
 import org.apache.ignite.internal.processors.query.NestedTxMode;
 import org.apache.ignite.internal.util.HostAndPortRange;
 import org.apache.ignite.internal.util.typedef.F;
+import org.apache.ignite.rpc.client.MySuperSqlFuncClient;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -120,6 +121,9 @@ public class ConnectionPropertiesImpl implements ConnectionProperties, Serializa
             }
         }
     });
+
+    private StringProperty userToken = new StringProperty(
+            "userToken", "用户 token", null, null,true, null);
 
     /** SSL: Use SSL connection to Ignite node. */
     private StringProperty sslMode = new StringProperty("sslMode",
@@ -272,7 +276,7 @@ public class ConnectionPropertiesImpl implements ConnectionProperties, Serializa
     /** Properties array. */
     private final ConnectionProperty[] propsArray = {
         distributedJoins, enforceJoinOrder, collocated, replicatedOnly, autoCloseServerCursor,
-        tcpNoDelay, lazy, socketSendBuffer, socketReceiveBuffer, skipReducerOnUpdate, nestedTxMode,
+        tcpNoDelay, lazy, userToken, socketSendBuffer, socketReceiveBuffer, skipReducerOnUpdate, nestedTxMode,
         sslMode, sslCipherSuites, sslProtocol, sslKeyAlgorithm,
         sslClientCertificateKeyStoreUrl, sslClientCertificateKeyStorePassword, sslClientCertificateKeyStoreType,
         sslTrustCertificateKeyStoreUrl, sslTrustCertificateKeyStorePassword, sslTrustCertificateKeyStoreType,
@@ -363,6 +367,16 @@ public class ConnectionPropertiesImpl implements ConnectionProperties, Serializa
     /** {@inheritDoc} */
     @Override public void setEnforceJoinOrder(boolean val) {
         enforceJoinOrder.setValue(val);
+    }
+
+    @Override
+    public String getUserToken() {
+        return userToken.value();
+    }
+
+    @Override
+    public void setUserToken(String userToken) {
+        this.userToken.setValue(userToken);
     }
 
     /** {@inheritDoc} */

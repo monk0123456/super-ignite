@@ -32,6 +32,8 @@ public class JdbcQueryExecuteRequest extends JdbcRequest {
     /** Schema name. */
     private String schemaName;
 
+    private String userToken;
+
     /** Fetch size. */
     private int pageSize;
 
@@ -72,11 +74,12 @@ public class JdbcQueryExecuteRequest extends JdbcRequest {
      * @param sqlQry SQL query.
      * @param args Arguments list.
      */
-    public JdbcQueryExecuteRequest(JdbcStatementType stmtType, String schemaName, int pageSize, int maxRows,
+    public JdbcQueryExecuteRequest(JdbcStatementType stmtType, String schemaName, String userToken, int pageSize, int maxRows,
         boolean autoCommit, String sqlQry, Object[] args) {
         super(QRY_EXEC);
 
         this.schemaName = F.isEmpty(schemaName) ? null : schemaName;
+        this.userToken = F.isEmpty(userToken) ? null : userToken;
         this.pageSize = pageSize;
         this.maxRows = maxRows;
         this.sqlQry = sqlQry;
@@ -120,6 +123,10 @@ public class JdbcQueryExecuteRequest extends JdbcRequest {
         return schemaName;
     }
 
+    @Nullable public String userToken() {
+        return userToken;
+    }
+
     /**
      * @return Expected statement type.
      */
@@ -140,6 +147,7 @@ public class JdbcQueryExecuteRequest extends JdbcRequest {
         super.writeBinary(writer, protoCtx);
 
         writer.writeString(schemaName);
+        writer.writeString(userToken);
         writer.writeInt(pageSize);
         writer.writeInt(maxRows);
         writer.writeString(sqlQry);
@@ -166,6 +174,7 @@ public class JdbcQueryExecuteRequest extends JdbcRequest {
         super.readBinary(reader, protoCtx);
 
         schemaName = reader.readString();
+        userToken = reader.readString();
         pageSize = reader.readInt();
         maxRows = reader.readInt();
         sqlQry = reader.readString();

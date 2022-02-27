@@ -34,6 +34,7 @@ import java.util.List;
 
 //import cn.myservice.MyConnectionService;
 //import cn.mysuper.service.IMyConnection;
+import cn.log.MyLogger;
 import org.apache.ignite.cache.query.Query;
 import org.apache.ignite.internal.processors.cache.query.IgniteQueryErrorCode;
 import org.apache.ignite.internal.processors.odbc.ClientListenerResponse;
@@ -135,43 +136,56 @@ public class JdbcThinStatement implements Statement {
         this.conn = conn;
         this.resHoldability = resHoldability;
         this.schema = schema;
+
+        System.out.println(this.conn.getUserToken());
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinStatement --> 构造函数: " + this.conn.getUserToken());
+        MyLogger.getInstance().myWriter("*******************************");
+        System.out.println("*******************************");
     }
 
     /**
      * 输入 sql 转换为自己的 sql
      * */
     public String myExecuteQuery(String sql) throws SQLException {
-        if (this.conn.getThinJdbc()) {
-            if (this.conn.getUserToken() != null && !this.conn.getUserToken().trim().equals("")) {
-                String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
-                //String mysql0 = "select my_line_inary(?)";
-                List<Object> lst = new ArrayList<Object>();
-                lst.add(MyLineToBinary.objToBytes(sql));
-                execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery: " + this.conn.getUserToken());
+        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
+        MyLogger.getInstance().myWriter("*******************************");
+        System.out.println("*******************************");
+        if (this.conn.getUserToken() != null && !this.conn.getUserToken().trim().equals("")) {
+            String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
+            //String mysql0 = "select my_line_inary(?)";
+            List<Object> lst = new ArrayList<Object>();
+            lst.add(MyLineToBinary.objToBytes(sql));
+            execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
 
-                ResultSet rs = getResultSet();
+            ResultSet rs = getResultSet();
 
-                if (rs == null)
-                    throw new SQLException("The query isn't SELECT query: " + sql, SqlStateCode.PARSING_EXCEPTION);
+            if (rs == null)
+                throw new SQLException("The query isn't SELECT query: " + sql, SqlStateCode.PARSING_EXCEPTION);
 
-                String mysql = "";
-                while (rs.next()) {
-                    mysql = rs.getString(1);
-                }
-                rs.close();
-
-                return mysql;
+            String mysql = "";
+            while (rs.next()) {
+                mysql = rs.getString(1);
             }
-            else
-            {
-                return sql;
-            }
+            rs.close();
+
+            return mysql;
         }
-        return sql;
+        return null;
     }
 
     /** {@inheritDoc} */
     @Override public ResultSet executeQuery(String sql0) throws SQLException {
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery: " + this.conn.getUserToken());
+        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery 的 sql: " + sql0);
+        MyLogger.getInstance().myWriter("*******************************");
+        System.out.println("*******************************");
         /**
          * 执行 sql
          * */
@@ -265,7 +279,7 @@ public class JdbcThinStatement implements Statement {
             return;
         }
 
-        JdbcQueryExecuteRequest req = new JdbcQueryExecuteRequest(stmtType, schema, pageSize,
+        JdbcQueryExecuteRequest req = new JdbcQueryExecuteRequest(stmtType, schema, this.conn.getUserToken(), pageSize,
             maxRows, conn.getAutoCommit(), sql, args == null ? null : args.toArray(new Object[args.size()]));
 
         JdbcResultWithIo resWithIo = conn.sendRequest(req, this, null);

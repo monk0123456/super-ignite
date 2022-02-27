@@ -70,7 +70,7 @@ public class MyPlusFunc implements Serializable {
         return myPlusFunc.superSql(userToken, sql);
     }
 
-    public static String my_line_inary(byte[] bytes) {
+    public static String my_line_binary(byte[] bytes) {
         return (String)MyLineToBinary.restore(bytes);
     }
 

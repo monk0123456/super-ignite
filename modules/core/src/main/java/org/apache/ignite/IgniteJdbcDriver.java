@@ -340,6 +340,8 @@ public class IgniteJdbcDriver implements Driver {
     /** Parameter: schema name. */
     public static final String PARAM_SCHEMA = "schema";
 
+    public static final String USER_TOKEN = "userToken";
+
     /** Parameter: query max memory. */
     public static final String PARAM_QRY_MAX_MEMORY = "queryMaxMemory";
 
@@ -396,6 +398,8 @@ public class IgniteJdbcDriver implements Driver {
 
     /** Schema property name. */
     public static final String PROP_SCHEMA = PROP_PREFIX + PARAM_SCHEMA;
+
+    public static final String PROP_USER_TOKEN = PROP_PREFIX + USER_TOKEN;
 
     /** Query max memory property name. */
     public static final String PROP_QRY_MAX_MEMORY = PROP_PREFIX + PARAM_QRY_MAX_MEMORY;
@@ -475,6 +479,7 @@ public class IgniteJdbcDriver implements Driver {
             new JdbcDriverPropertyInfo("Queries with multiple statements allowed", info.getProperty(PROP_MULTIPLE_STMTS), ""),
             new JdbcDriverPropertyInfo("Skip reducer on update", info.getProperty(PROP_SKIP_REDUCER_ON_UPDATE), ""),
             new JdbcDriverPropertyInfo("Schema name", info.getProperty(PROP_SCHEMA), ""),
+            new JdbcDriverPropertyInfo("User Token", info.getProperty(PROP_USER_TOKEN), ""),
             new JdbcDriverPropertyInfo("Query memory limit", info.getProperty(PROP_QRY_MAX_MEMORY), "")
         );
 

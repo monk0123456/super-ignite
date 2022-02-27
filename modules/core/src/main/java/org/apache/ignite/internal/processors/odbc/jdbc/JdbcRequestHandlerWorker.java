@@ -17,6 +17,9 @@
 package org.apache.ignite.internal.processors.odbc.jdbc;
 
 import java.util.concurrent.LinkedBlockingQueue;
+
+import cn.log.MyLogger;
+import com.google.common.base.Strings;
 import org.apache.ignite.IgniteLogger;
 import org.apache.ignite.internal.GridKernalContext;
 import org.apache.ignite.internal.IgniteInterruptedCheckedException;
@@ -76,6 +79,19 @@ class JdbcRequestHandlerWorker extends GridWorker {
         new IgniteThread(this).start();
     }
 
+    private Boolean isQueryToken(final JdbcRequest JdbcRequest)
+    {
+        if (JdbcRequest instanceof JdbcQueryExecuteRequest)
+        {
+            JdbcQueryExecuteRequest jdbcQueryExecuteRequest = (JdbcQueryExecuteRequest) JdbcRequest;
+            if (Strings.isNullOrEmpty(jdbcQueryExecuteRequest.userToken()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** {@inheritDoc} */
     @Override protected void body() throws InterruptedException, IgniteInterruptedCheckedException {
         try {
@@ -85,9 +101,22 @@ class JdbcRequestHandlerWorker extends GridWorker {
                 GridFutureAdapter<ClientListenerResponse> fut = req.get2();
 
                 try {
-                    JdbcResponse res = hnd.doHandle(req.get1());
+                    MyLogger.getInstance().myWriter("************** 服务端 *****************");
+                    MyLogger.getInstance().myWriter("JdbcRequestHandlerWorker --> body: " + req.get1().toString());
+                    MyLogger.getInstance().myWriter("************** 服务端 *****************");
 
-                    fut.onDone(res);
+                    if (isQueryToken(req.get1()))
+                    {
+                        JdbcResponse res = hnd.doHandle(req.get1());
+                        fut.onDone(res);
+                    }
+                    else
+                    {
+                        fut.onDone(new Exception("userToken 不能为空！"));
+                    }
+
+//                    JdbcResponse res = hnd.doHandle(req.get1());
+//                    fut.onDone(res);
                 }
                 catch (Exception e) {
                     fut.onDone(e);

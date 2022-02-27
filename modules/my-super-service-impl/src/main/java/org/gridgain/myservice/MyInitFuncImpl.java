@@ -48,9 +48,9 @@ public class MyInitFuncImpl implements IInitFunc {
             clause = "CREATE ALIAS IF NOT EXISTS superSql FOR \"org.tools.MyPlusFunc.superSql\"";
             connMgr.executeStatement("PUBLIC", clause);
             System.out.println("自定义方法：superSql 初始化成功！");
-            clause = "CREATE ALIAS IF NOT EXISTS my_line_inary FOR \"org.tools.MyPlusFunc.my_line_inary\"";
+            clause = "CREATE ALIAS IF NOT EXISTS my_line_binary FOR \"org.tools.MyPlusFunc.my_line_binary\"";
             connMgr.executeStatement("PUBLIC", clause);
-            System.out.println("自定义方法：my_line_inary 初始化成功！（这个方法是用作测试的）");
+            System.out.println("自定义方法：my_line_binary 初始化成功！（这个方法是用作测试的）");
         } catch (IgniteCheckedException var5) {
             var5.printStackTrace();
         }

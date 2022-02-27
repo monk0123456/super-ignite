@@ -67,6 +67,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import cn.log.MyLogger;
 import org.apache.ignite.IgniteCheckedException;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.binary.BinaryObjectException;
@@ -263,8 +265,9 @@ public class JdbcThinConnection implements Connection {
     /** 添加 group_id */
     private Long group_id;
 
-    /** 是否是 */
-    private Boolean isThinJdbc = false;
+    public ConnectionProperties getConnProps() {
+        return connProps;
+    }
 
     public Long getGroup_id() {
         return group_id;
@@ -272,14 +275,6 @@ public class JdbcThinConnection implements Connection {
 
     public void setGroup_id(Long group_id) {
         this.group_id = group_id;
-    }
-
-    public Boolean getThinJdbc() {
-        return isThinJdbc;
-    }
-
-    public void setThinJdbc(Boolean thinJdbc) {
-        isThinJdbc = thinJdbc;
     }
 
     public String getUserToken() {
@@ -311,6 +306,11 @@ public class JdbcThinConnection implements Connection {
             new IgniteThreadFactory(ctx.configuration().getIgniteInstanceName(), "jdbc-maintenance"));
 
         schema = JdbcUtils.normalizeSchema(connProps.getSchema());
+        this.setUserToken(connProps.getUserToken());
+
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinConnection --> 构造函数: " + connProps.getUserToken());
+        System.out.println("*******************************");
 
         partitionAwareness = connProps.isPartitionAwareness();
 
@@ -400,7 +400,7 @@ public class JdbcThinConnection implements Connection {
                 streamState = new StreamState((SqlSetStreamingCommand)cmd, cliIo);
 
                 sendRequest(new JdbcQueryExecuteRequest(JdbcStatementType.ANY_STATEMENT_TYPE,
-                    schema, 1, 1, autoCommit, sql, null), stmt, cliIo);
+                    schema, getUserToken(), 1, 1, autoCommit, sql, null), stmt, cliIo);
 
                 streamState.start();
             }
@@ -999,6 +999,10 @@ public class JdbcThinConnection implements Connection {
      */
     JdbcResultWithIo sendRequest(JdbcRequest req, JdbcThinStatement stmt, @Nullable JdbcThinTcpIo stickyIo)
         throws SQLException {
+
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinConnection --> sendRequest: " + req.toString() + " userToken: " + this.connProps.getUserToken());
+        System.out.println("*******************************");
 
         RequestTimeoutTask reqTimeoutTask = null;
 

@@ -78,24 +78,7 @@ import static java.sql.ResultSet.CONCUR_READ_ONLY;
 import static java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT;
 import static java.sql.ResultSet.TYPE_FORWARD_ONLY;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_CACHE;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_CFG;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_COLLOCATED;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_DISTRIBUTED_JOINS;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_ENFORCE_JOIN_ORDER;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_LAZY;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_LOCAL;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_MULTIPLE_STMTS;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_NODE_ID;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_QRY_MAX_MEMORY;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_SCHEMA;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_SKIP_REDUCER_ON_UPDATE;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_STREAMING;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_STREAMING_ALLOW_OVERWRITE;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_STREAMING_FLUSH_FREQ;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_STREAMING_PER_NODE_BUF_SIZE;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_STREAMING_PER_NODE_PAR_OPS;
-import static org.apache.ignite.IgniteJdbcDriver.PROP_TX_ALLOWED;
+import static org.apache.ignite.IgniteJdbcDriver.*;
 import static org.apache.ignite.internal.jdbc2.JdbcUtils.convertToSqlException;
 import static org.apache.ignite.internal.processors.cache.query.IgniteQueryErrorCode.createJdbcSqlException;
 
@@ -171,6 +154,8 @@ public class JdbcConnection implements Connection {
     /** Lazy query execution flag. */
     private boolean lazy;
 
+    private String userToken;
+
     /** Transactions allowed flag. */
     private boolean txAllowed;
 
@@ -233,6 +218,7 @@ public class JdbcConnection implements Connection {
         distributedJoins = Boolean.parseBoolean(props.getProperty(PROP_DISTRIBUTED_JOINS));
         enforceJoinOrder = Boolean.parseBoolean(props.getProperty(PROP_ENFORCE_JOIN_ORDER));
         lazy = Boolean.parseBoolean(props.getProperty(PROP_LAZY));
+        userToken = props.getProperty(PROP_USER_TOKEN);
         txAllowed = Boolean.parseBoolean(props.getProperty(PROP_TX_ALLOWED));
         stream = Boolean.parseBoolean(props.getProperty(PROP_STREAMING));
 
@@ -965,6 +951,10 @@ public class JdbcConnection implements Connection {
      */
     boolean isLazy() {
         return lazy;
+    }
+
+    String getUserToken() {
+        return userToken;
     }
 
     /**

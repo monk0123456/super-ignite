@@ -83,6 +83,16 @@ public interface ConnectionProperties {
     public void setEnforceJoinOrder(boolean enforceJoinOrder);
 
     /**
+     * 获取 user token
+     * */
+    public String getUserToken();
+
+    /**
+     * 设置 user token
+     * */
+    public void setUserToken(String userToken);
+
+    /**
      * @return Collocated flag.
      */
     public boolean isCollocated();

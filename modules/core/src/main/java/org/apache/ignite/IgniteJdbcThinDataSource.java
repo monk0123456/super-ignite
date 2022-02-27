@@ -180,6 +180,20 @@ public class IgniteJdbcThinDataSource implements DataSource, Serializable {
     }
 
     /**
+     * @param userToken
+     */
+    public void setUserToken(String userToken) {
+        props.setUserToken(userToken);
+    }
+
+    /**
+     * @return userToken
+     */
+    public String getUserToken() {
+        return props.getUserToken();
+    }
+
+    /**
      * @return The URL of the connection.
      */
     public String getUrl() {

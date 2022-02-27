@@ -8,9 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ignite-core" />
-        <module name="my-super-service-impl" />
-        <module name="my-super-service" />
         <module name="my-thin-client" />
+        <module name="my-super-service" />
+        <module name="my-super-service-impl" />
         <module name="ignite-schedule" />
       </profile>
     </annotationProcessing>

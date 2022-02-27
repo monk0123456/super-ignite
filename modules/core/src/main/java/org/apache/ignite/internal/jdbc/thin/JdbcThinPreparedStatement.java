@@ -38,6 +38,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import cn.log.MyLogger;
 import org.apache.ignite.internal.processors.odbc.SqlListenerUtils;
 import org.apache.ignite.internal.processors.odbc.SqlStateCode;
 import org.apache.ignite.internal.processors.odbc.jdbc.JdbcMetaParamsRequest;
@@ -62,12 +64,15 @@ public class JdbcThinPreparedStatement extends JdbcThinStatement implements Prep
      * Creates new prepared statement.
      *
      * @param conn Connection.
-     * @param sql SQL query.
+     * @param sql0 SQL query.
      * @param resHoldability Result set holdability.
      * @param schema Schema name.
      */
     JdbcThinPreparedStatement(JdbcThinConnection conn, String sql0, int resHoldability, String schema) throws SQLException {
         super(conn, resHoldability, schema);
+        System.out.println("*******************************");
+        MyLogger.getInstance().myWriter("JdbcThinPreparedStatement --> 构造函数: " + this.conn.getUserToken());
+        System.out.println("*******************************");
         // 转换 sql 语句
         this.sql = super.myExecuteQuery(sql0);
     }
