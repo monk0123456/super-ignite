@@ -16,7 +16,7 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
-        String rs = MyInfoService.getInstance().getMyInfo().showMsg("吴大富");
-        System.out.println(rs);
+        //String rs = MyInfoService.getInstance().getMyInfo().showMsg("吴大富");
+        //System.out.println(rs);
     }
 }

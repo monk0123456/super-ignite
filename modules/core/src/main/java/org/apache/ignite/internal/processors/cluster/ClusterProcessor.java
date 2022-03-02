@@ -778,11 +778,14 @@ public class ClusterProcessor extends GridProcessorAdapter implements Distribute
             }
         }
 
-        try {
-            MySuperSqlFuncService mySuperSqlFuncService = new MySuperSqlFuncService(Ignition.ignite());
-            mySuperSqlFuncService.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 只在服务端才运行
+        if (!Ignition.ignite().configuration().isClientMode()) {
+            try {
+                MySuperSqlFuncService mySuperSqlFuncService = new MySuperSqlFuncService(Ignition.ignite());
+                mySuperSqlFuncService.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

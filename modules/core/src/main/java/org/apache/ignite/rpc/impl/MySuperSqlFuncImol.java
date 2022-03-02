@@ -24,6 +24,10 @@ public class MySuperSqlFuncImol implements MySuperSqlFunc.Iface, Serializable {
         {
             return 0L;
         }
+        else if (userToken != null && userToken.equals("my_admin"))
+        {
+            return -1L;
+        }
         else
         {
             List<List<?>> lst_row = ignite.cache("my_users_group").query(new SqlFieldsQuery("select g.id from my_users_group as g where g.user_token = ?").setArgs(userToken)).getAll();
@@ -35,6 +39,6 @@ public class MySuperSqlFuncImol implements MySuperSqlFunc.Iface, Serializable {
                 }
             }
         }
-        return -1L;
+        return -2L;
     }
 }

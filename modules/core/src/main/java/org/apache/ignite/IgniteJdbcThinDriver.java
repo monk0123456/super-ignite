@@ -26,9 +26,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import cn.log.MyLogger;
-import cn.myservice.MyConnectionService;
-import cn.mysuper.model.MyUrlToken;
-import cn.mysuper.service.IMyConnection;
 import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.internal.IgniteVersionUtils;
 import org.apache.ignite.internal.jdbc.thin.ConnectionPropertiesImpl;
@@ -163,17 +160,14 @@ public class IgniteJdbcThinDriver implements Driver {
         connProps.init(url, props);
 
         long group_id = MySuperSqlFuncClient.getGroupId(connProps.getUserToken());
-        if (group_id == -1L)
-        {
+        if (group_id == -2L) {
             try {
                 throw new Exception("userToken 没有连接权限！");
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
-        }
-        else
-        {
+        } else {
             JdbcThinConnection jdbcThinConnection = new JdbcThinConnection(connProps);
             jdbcThinConnection.setGroup_id(group_id);
             return jdbcThinConnection;

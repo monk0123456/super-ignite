@@ -155,11 +155,12 @@ public class JdbcThinStatement implements Statement {
         MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
         MyLogger.getInstance().myWriter("*******************************");
         System.out.println("*******************************");
-        if (this.conn.getUserToken() != null && !this.conn.getUserToken().trim().equals("")) {
+        if (this.conn.getGroup_id() >= 0L) {
             String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
             //String mysql0 = "select my_line_inary(?)";
             List<Object> lst = new ArrayList<Object>();
             lst.add(MyLineToBinary.objToBytes(sql));
+            //lst.add(sql);
             execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
 
             ResultSet rs = getResultSet();
@@ -174,6 +175,10 @@ public class JdbcThinStatement implements Statement {
             rs.close();
 
             return mysql;
+        }
+        else if (this.conn.getGroup_id() == -1L)
+        {
+            return sql;
         }
         return null;
     }

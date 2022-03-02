@@ -79,8 +79,13 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
         return MyScenes.superInvoke(Ignition.ignite(), methodName, lst);
     }
 
+//    @Override
+//    public String superSql(final String userToken, final String sql) {
+//        return MySuperSql.superSql(Ignition.ignite(), userToken, sql);
+//    }
+
     @Override
-    public String superSql(String group_id, byte[] sql) {
-        return MySuperSql.superSql(Ignition.ignite(), group_id, sql);
+    public String superSql(final String userToken, final byte[] sql) {
+        return MySuperSql.superSql(Ignition.ignite(), userToken, sql);
     }
 }

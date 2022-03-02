@@ -32,9 +32,20 @@ public class MyLogger {
 //            System.out.println(path);
 //            path = path + "/my_super_con.log";
             String path = "/Users/chenfei/Documents/Java/MyGridGainServer/my_log/my_super_con.log";
+            String path_1 = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "/my_super_con.log";
+            //System.out.println(path);
+            if (path_1.contains("/Users/chenfei/.m2/repository/org/gridgain/ignite-core/8.7.24/ignite-core-8.7.24.jar/"))
+            {
+                path = "/Users/chenfei/Documents/Java/MyGridGainServer/my_log/service/my_super_con.log";
+            }
+            else if (path_1.contains("/Users/chenfei/Documents/Java/MyGridGainServer/mylib/ignite-core-8.7.24.jar/"))
+            {
+                path = "/Users/chenfei/Documents/Java/MyGridGainServer/my_log/dbeaver/my_super_con.log";
+            }
 
             List<String> lst = new ArrayList<>();
             lst.add(txt);
+            //lst.add(path_1);
             //CharSink sink = Files.asCharSink(new File("src/main/resources/sample.txt"), Charsets.UTF_8, FileWriteMode.APPEND);
             CharSink sink = Files.asCharSink(new File(path), Charsets.UTF_8, FileWriteMode.APPEND);
             sink.writeLines(lst.stream());

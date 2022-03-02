@@ -24,5 +24,6 @@ public interface IMyPlusFunc {
      * */
     public Object myInvoke(final String methodName, final Object... ps);
 
-    public String superSql(String var1, byte[] var2);
+    public String superSql(final String var1, final byte[] var2);
+    //public String superSql(final String userToken, final String sql);
 }

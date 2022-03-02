@@ -1,6 +1,7 @@
 package org.gridgain.myservice;
 
 import cn.mysuper.service.IInitFunc;
+import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCheckedException;
 import org.apache.ignite.IgniteLogger;
 import org.apache.ignite.Ignition;
@@ -8,6 +9,7 @@ import org.apache.ignite.internal.GridKernalContext;
 import org.apache.ignite.internal.IgniteEx;
 import org.apache.ignite.internal.processors.query.h2.ConnectionManager;
 import org.apache.ignite.internal.processors.query.h2.IgniteH2Indexing;
+import org.gridgain.plus.init.PlusInit;
 
 import java.util.logging.Logger;
 
@@ -15,7 +17,10 @@ public class MyInitFuncImpl implements IInitFunc {
 
     @Override
     public void initFunc() {
-        GridKernalContext ctx = ((IgniteEx)Ignition.ignite()).context();
+        Ignite ignite = Ignition.ignite();
+        PlusInit plusInit = new PlusInit(ignite);
+        plusInit.initialization();
+        GridKernalContext ctx = ((IgniteEx)ignite).context();
         IgniteH2Indexing h2Indexing = (IgniteH2Indexing)ctx.query().getIndexing();
         ConnectionManager connMgr = h2Indexing.connections();
         System.out.println("自定义方法的初始化");
