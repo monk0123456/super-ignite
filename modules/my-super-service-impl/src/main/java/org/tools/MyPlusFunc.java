@@ -61,12 +61,20 @@ public class MyPlusFunc implements Serializable {
     /**
      * 场景调用
      * */
-    public static Object myInvoke(final String methodName, final Object... ps)
+    public static Object myInvoke(final String methodName, final Long group_id, final Object... ps)
     {
-        return myPlusFunc.myInvoke(methodName, ps);
+        return myPlusFunc.myInvoke(methodName, group_id, ps);
     }
 
-    public static String superSql(String userToken, byte[] sql) {
+    /**
+     * 联接函数的调用
+     * */
+    public static Object myInvokeLink(final String methodName, final Long group_id, final Object... ps)
+    {
+        return myPlusFunc.myInvokeLink(methodName, group_id, ps);
+    }
+
+    public static String superSql(byte[] userToken, byte[] sql) {
         return myPlusFunc.superSql(userToken, sql);
     }
 

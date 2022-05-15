@@ -22,8 +22,14 @@ public interface IMyPlusFunc {
     /**
      * 场景调用
      * */
-    public Object myInvoke(final String methodName, final Object... ps);
+    public Object myInvoke(final String methodName, final Long group_id, final Object... ps);
+    //public Object myInvoke(final String methodName, final Object... ps);
 
-    public String superSql(final String var1, final byte[] var2);
+    /**
+     * 联接方法的调用
+     * */
+    public Object myInvokeLink(final String methodName, final Long group_id, final Object... ps);
+
+    public String superSql(final byte[] var1, final byte[] var2);
     //public String superSql(final String userToken, final String sql);
 }

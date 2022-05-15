@@ -6,10 +6,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.scheduler.SchedulerFuture;
-import org.gridgain.plus.dml.MyScenes;
+import org.gridgain.plus.dml.MySmartScenes;
 import org.gridgain.plus.sql.MySuperSql;
 import org.tools.MyPlusUtil;
 
@@ -32,52 +34,77 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
 
     @Override
     public Object myFun(String methodName, Object... ps) {
-        Ignite ignite = Ignition.ignite();
-        MyFunc myFunc = (MyFunc)ignite.cache("my_func").get(methodName);
+        return MyPlusUtil.invokeFunc(Ignition.ignite(), methodName, ps);
+    }
 
-        try {
-            Class<?> cls = Class.forName(myFunc.getCls_name());
-            Constructor constructor = cls.getConstructor();
-            Object myobj = constructor.newInstance();
-            Method[] methods = myobj.getClass().getMethods();
-            Method[] var9 = methods;
-            int var10 = methods.length;
+//    @Override
+//    public Object myFun(String methodName, Object... ps) {
+//        Ignite ignite = Ignition.ignite();
+//        MyFunc myFunc = (MyFunc)ignite.cache("my_func").get(methodName);
+//
+//        try {
+//            Class<?> cls = Class.forName(myFunc.getCls_name());
+//            Constructor constructor = cls.getConstructor();
+//            Object myobj = constructor.newInstance();
+//            Method[] methods = myobj.getClass().getMethods();
+//            Method[] var9 = methods;
+//            int var10 = methods.length;
+//
+//            for(int var11 = 0; var11 < var10; ++var11) {
+//                Method method = var9[var11];
+//                if (method.getName().equals(myFunc.getJava_method_name())) {
+//                    Object rs = method.invoke(myobj, ps);
+//                    return rs;
+//                }
+//            }
+//        } catch (ClassNotFoundException var14) {
+//            var14.printStackTrace();
+//        } catch (InstantiationException var15) {
+//            var15.printStackTrace();
+//        } catch (InvocationTargetException var16) {
+//            var16.printStackTrace();
+//        } catch (NoSuchMethodException var17) {
+//            var17.printStackTrace();
+//        } catch (IllegalAccessException var18) {
+//            var18.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
-            for(int var11 = 0; var11 < var10; ++var11) {
-                Method method = var9[var11];
-                if (method.getName().equals(myFunc.getJava_method_name())) {
-                    Object rs = method.invoke(myobj, ps);
-                    return rs;
-                }
-            }
-        } catch (ClassNotFoundException var14) {
-            var14.printStackTrace();
-        } catch (InstantiationException var15) {
-            var15.printStackTrace();
-        } catch (InvocationTargetException var16) {
-            var16.printStackTrace();
-        } catch (NoSuchMethodException var17) {
-            var17.printStackTrace();
-        } catch (IllegalAccessException var18) {
-            var18.printStackTrace();
+    @Override
+    public Object myInvoke(String methodName, Long group_id, Object... ps) {
+        List<Object> lst = new ArrayList<>();
+        for (Object m : ps)
+        {
+            lst.add(m);
         }
-
-        return null;
+        return MySmartScenes.invokeScenes(Ignition.ignite(), group_id, methodName, lst);
     }
 
     @Override
-    public Object myInvoke(String methodName, Object... ps) {
-        ArrayList<Object> lst = new ArrayList();
-        Object[] var4 = ps;
-        int var5 = ps.length;
-
-        for(int var6 = 0; var6 < var5; ++var6) {
-            Object m = var4[var6];
+    public Object myInvokeLink(String methodName, Long group_id, Object... ps) {
+        List<Object> lst = new ArrayList<>();
+        for (Object m : ps)
+        {
             lst.add(m);
         }
-
-        return MyScenes.superInvoke(Ignition.ignite(), methodName, lst);
+        return MySmartScenes.invokeScenesLink(Ignition.ignite(), group_id, methodName, lst);
     }
+
+//    @Override
+//    public Object myInvoke(String methodName, Object... ps) {
+//        ArrayList<Object> lst = new ArrayList();
+//        Object[] var4 = ps;
+//        int var5 = ps.length;
+//
+//        for(int var6 = 0; var6 < var5; ++var6) {
+//            Object m = var4[var6];
+//            lst.add(m);
+//        }
+//
+//        return MyScenes.superInvoke(Ignition.ignite(), methodName, lst);
+//    }
 
 //    @Override
 //    public String superSql(final String userToken, final String sql) {
@@ -85,7 +112,7 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
 //    }
 
     @Override
-    public String superSql(final String userToken, final byte[] sql) {
+    public String superSql(final byte[] userToken, final byte[] sql) {
         return MySuperSql.superSql(Ignition.ignite(), userToken, sql);
     }
 }

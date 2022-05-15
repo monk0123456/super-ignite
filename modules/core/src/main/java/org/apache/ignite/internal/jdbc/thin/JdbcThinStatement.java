@@ -154,11 +154,15 @@ public class JdbcThinStatement implements Statement {
         MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery: " + this.conn.getUserToken());
         MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
         MyLogger.getInstance().myWriter("*******************************");
+        System.out.println("JdbcThinStatement --> myExecuteQuery: " + this.conn.getGroup_id());
+        System.out.println("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
         System.out.println("*******************************");
         if (this.conn.getGroup_id() >= 0L) {
-            String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
+            //String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
+            String mysql0 = "select superSql(?,?)";
             //String mysql0 = "select my_line_inary(?)";
             List<Object> lst = new ArrayList<Object>();
+            lst.add(MyLineToBinary.objToBytes(this.conn.getConnProps().getUserToken()));
             lst.add(MyLineToBinary.objToBytes(sql));
             //lst.add(sql);
             execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
