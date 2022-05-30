@@ -619,15 +619,24 @@ public class IgniteConfiguration {
 
     /**
      * 扩展的属性
+     * 是否开启 my log
      * */
-    public static final boolean DATA_SET = true;
+    public static final boolean MY_LOG = true;
+
+    /**
+     * 多用户组
+     * */
+    public static final boolean MULTI_USER_GROUP = true;
 
     public static final String SUPER_ADMIN = "root";
 
     public static final String SUPER_PASSWORD = "root";
 
-    /** 是否允许 data set */
-    private boolean dataSetEnabled = DATA_SET;
+    /** 是否允许保存增删改的 log  */
+    private boolean myLogEnabled = MY_LOG;
+
+    /** 是否允许多用户组 */
+    private boolean multiUserGroup = MULTI_USER_GROUP;
 
     /** 超级管理员 */
     private String super_admin = SUPER_ADMIN;
@@ -651,12 +660,21 @@ public class IgniteConfiguration {
 
     private Map<String, TableTemplateConfiguration> templateCfg;
 
-    public boolean isDataSetEnabled() {
-        return dataSetEnabled;
+    public boolean isMyLogEnabled() {
+        return myLogEnabled;
     }
 
-    public IgniteConfiguration setDataSetEnabled(boolean dataSetEnabled) {
-        this.dataSetEnabled = dataSetEnabled;
+    public IgniteConfiguration setMyLogEnabled(boolean myLogEnabled) {
+        this.myLogEnabled = myLogEnabled;
+        return this;
+    }
+
+    public boolean isMultiUserGroup() {
+        return multiUserGroup;
+    }
+
+    public IgniteConfiguration setMultiUserGroup(boolean multiUserGroup) {
+        this.multiUserGroup = multiUserGroup;
         return this;
     }
 
@@ -713,7 +731,8 @@ public class IgniteConfiguration {
         assert cfg != null;
 
         // 扩展
-        dataSetEnabled = cfg.isDataSetEnabled();
+        myLogEnabled = cfg.isMyLogEnabled();
+        multiUserGroup = cfg.isMultiUserGroup();
         super_admin = cfg.getSuper_admin();
         super_password = cfg.getSuper_password();
         root_token = cfg.getRoot_token();
@@ -1227,7 +1246,8 @@ public class IgniteConfiguration {
 
     /**
      * Gets shutdown policy.
-     * If policy was not set default policy will be return {@link IgniteCluster.DEFAULT_SHUTDOWN_POLICY}.
+     * If policy was not set default policy will be return {@link }.
+     * IgniteCluster.DEFAULT_SHUTDOWN_POLICY
      *
      * @return Shutdown policy.
      */
