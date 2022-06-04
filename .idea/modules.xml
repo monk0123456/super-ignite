@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/modules/my-super-service/my-super-service.iml" filepath="$PROJECT_DIR$/modules/my-super-service/my-super-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/modules/my-super-service-impl/my-super-service-impl.iml" filepath="$PROJECT_DIR$/modules/my-super-service-impl/my-super-service-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/modules/my-thin-client/my-thin-client.iml" filepath="$PROJECT_DIR$/modules/my-thin-client/my-thin-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/my-thin-client-service/my-thin-client-service.iml" filepath="$PROJECT_DIR$/modules/my-thin-client-service/my-thin-client-service.iml" />
     </modules>
   </component>
 </project>

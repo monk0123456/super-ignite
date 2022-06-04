@@ -46,6 +46,7 @@
         <module>modules/my-super-service</module>
         <module>modules/my-super-service-impl</module>
         <module>modules/my-thin-client</module>
+        <module>modules/my-thin-client-service</module>
         <!--
         <module>modules/my-grid-plus</module>
         -->

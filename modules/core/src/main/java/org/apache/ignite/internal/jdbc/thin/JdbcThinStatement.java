@@ -35,6 +35,10 @@ import java.util.List;
 //import cn.myservice.MyConnectionService;
 //import cn.mysuper.service.IMyConnection;
 import cn.log.MyLogger;
+import cn.myservice.MyLoadScriptService;
+import cn.myservice.MySqlAstService;
+import cn.mysuper.service.IMySqlAst;
+import cn.smart.service.IMyLoadScript;
 import org.apache.ignite.cache.query.Query;
 import org.apache.ignite.internal.processors.cache.query.IgniteQueryErrorCode;
 import org.apache.ignite.internal.processors.odbc.ClientListenerResponse;
@@ -123,6 +127,10 @@ public class JdbcThinStatement implements Statement {
     /** Cancellation mutex. */
     final Object cancellationMux = new Object();
 
+    private IMySqlAst mySqlAst = MySqlAstService.getInstance().getMySqlAst();
+
+    private IMyLoadScript myLoadScript = MyLoadScriptService.getInstance().getMyLoadScript();
+
     /**
      * Creates new statement.
      *
@@ -145,6 +153,26 @@ public class JdbcThinStatement implements Statement {
         System.out.println("*******************************");
     }
 
+    private List<List<String>> reList(final List<List<String>> lsts)
+    {
+        List<List<String>> myLsts = new ArrayList<>();
+        for (List<String> lst : lsts)
+        {
+            if (lst.size() > 0 && lst.get(0).equals("loadFromNative"))
+            {
+                String path = mySqlAst.getStrValue(lst.subList(2, lst.size() - 1).get(0));
+                String code = myLoadScript.loadFromNative(path);
+                String[] myLoadFromNative = new String[]{"loadCode", "(", code, ")"};
+                myLsts.add(Arrays.asList(myLoadFromNative));
+            }
+            else
+            {
+                myLsts.add(lst);
+            }
+        }
+        return myLsts;
+    }
+
     /**
      * 输入 sql 转换为自己的 sql
      * */
@@ -158,12 +186,16 @@ public class JdbcThinStatement implements Statement {
         System.out.println("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
         System.out.println("*******************************");
         if (this.conn.getGroup_id() >= 0L) {
+            List<List<String>> myLst = reList(mySqlAst.getSmartSegment(sql));
+            // 如果 mylst 中包括：loadFromNative 函数，则先执行这个函数来提交给服务器
+
             //String mysql0 = String.format("select superSql(%s, ?)", this.conn.getGroup_id());
             String mysql0 = "select superSql(?,?)";
             //String mysql0 = "select my_line_inary(?)";
             List<Object> lst = new ArrayList<Object>();
             lst.add(MyLineToBinary.objToBytes(this.conn.getConnProps().getUserToken()));
-            lst.add(MyLineToBinary.objToBytes(sql));
+            //lst.add(MyLineToBinary.objToBytes(sql));
+            lst.add(MyLineToBinary.objToBytes(myLst));
             //lst.add(sql);
             execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, mysql0, lst);
 
