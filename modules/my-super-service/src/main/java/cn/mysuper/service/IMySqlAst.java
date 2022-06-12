@@ -11,6 +11,8 @@ public interface IMySqlAst {
 
     public List getSmartSegment(final String line);
 
+    public List reSmartSegmentLst(final List lst);
+
     public Object sqlToAst(final List lst);
 
     public String getStrValue(final String line);

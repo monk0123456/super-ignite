@@ -162,7 +162,7 @@ public class JdbcThinStatement implements Statement {
             {
                 String path = mySqlAst.getStrValue(lst.subList(2, lst.size() - 1).get(0));
                 String code = myLoadScript.loadFromNative(path);
-                String[] myLoadFromNative = new String[]{"loadCode", "(", code, ")"};
+                String[] myLoadFromNative = new String[]{"loadCode", "(", code, ")", ";"};
                 myLsts.add(Arrays.asList(myLoadFromNative));
             }
             else

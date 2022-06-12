@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.example</groupId>
+  <groupId>cn.smart.service</groupId>
   <artifactId>my-thin-client-service</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -34,11 +34,11 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
-    <dependency>
-      <groupId>my-grid-plus</groupId>
-      <artifactId>my-grid-plus</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>smart-sql</groupId>-->
+<!--      <artifactId>smart-sql</artifactId>-->
+<!--      <version>0.1.0-SNAPSHOT</version>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -62,6 +62,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.6.0</version>
       </plugin>
     </plugins>
   </build>

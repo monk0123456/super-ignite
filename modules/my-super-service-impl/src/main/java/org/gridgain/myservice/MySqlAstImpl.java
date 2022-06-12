@@ -20,6 +20,11 @@ public class MySqlAstImpl implements IMySqlAst {
     }
 
     @Override
+    public List reSmartSegmentLst(List lst) {
+        return MySmartSql.reSmartSegmentLst(lst);
+    }
+
+    @Override
     public Object sqlToAst(List lst) {
         return  MySelectPlus.sqlToAst((ArrayList) lst);
     }

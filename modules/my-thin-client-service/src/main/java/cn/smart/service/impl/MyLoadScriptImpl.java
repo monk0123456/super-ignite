@@ -19,7 +19,7 @@ public class MyLoadScriptImpl implements IMyLoadScript {
     @Override
     public String loadFromNative(String smartPath) {
         String code = getFileString(smartPath);
-        return null;
+        return code;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class MyLoadScriptImpl implements IMyLoadScript {
 
     @Override
     public String loadCode(String code) {
-        return null;
+        return code;
     }
 
     private String getUrlString(String url) throws IOException {

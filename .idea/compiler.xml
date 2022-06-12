@@ -10,19 +10,26 @@
         <module name="ignite-schedule" />
         <module name="my-super-service" />
         <module name="ignite-core" />
+        <module name="ignite-indexing" />
+        <module name="ignite-h2" />
         <module name="my-super-service-impl" />
         <module name="my-thin-client-service" />
         <module name="my-thin-client" />
+        <module name="ignite-spring" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apache-ignite" target="1.8" />
       <module name="ignite-core" target="1.8" />
+      <module name="ignite-h2" target="1.8" />
+      <module name="ignite-indexing" target="1.8" />
       <module name="ignite-schedule" target="1.8" />
+      <module name="ignite-spring" target="1.8" />
       <module name="my-super-service" target="1.8" />
       <module name="my-super-service-impl" target="1.8" />
       <module name="my-thin-client" target="1.8" />
       <module name="my-thin-client-service" target="1.8" />
+      <module name="super-ignite" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
