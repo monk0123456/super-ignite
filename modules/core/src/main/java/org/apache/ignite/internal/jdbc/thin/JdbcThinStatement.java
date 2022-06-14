@@ -63,6 +63,7 @@ import org.apache.ignite.internal.sql.SqlParser;
 import org.apache.ignite.internal.sql.command.SqlCommand;
 import org.apache.ignite.internal.sql.command.SqlSetStreamingCommand;
 import org.apache.ignite.internal.util.typedef.F;
+import org.apache.ignite.internal.util.typedef.X;
 import org.tools.MyLineToBinary;
 
 import static java.sql.ResultSet.CONCUR_READ_ONLY;
@@ -146,11 +147,11 @@ public class JdbcThinStatement implements Statement {
         this.schema = schema;
 
         System.out.println(this.conn.getUserToken());
-        System.out.println("*******************************");
-        MyLogger.getInstance().myWriter("*******************************");
-        MyLogger.getInstance().myWriter("JdbcThinStatement --> 构造函数: " + this.conn.getUserToken());
-        MyLogger.getInstance().myWriter("*******************************");
-        System.out.println("*******************************");
+//        System.out.println("*******************************");
+//        MyLogger.getInstance().myWriter("*******************************");
+//        MyLogger.getInstance().myWriter("JdbcThinStatement --> 构造函数: " + this.conn.getUserToken());
+//        MyLogger.getInstance().myWriter("*******************************");
+//        System.out.println("*******************************");
     }
 
     private List<List<String>> reList(final List<List<String>> lsts)
@@ -177,14 +178,14 @@ public class JdbcThinStatement implements Statement {
      * 输入 sql 转换为自己的 sql
      * */
     public String myExecuteQuery(String sql) throws SQLException {
-        System.out.println("*******************************");
-        MyLogger.getInstance().myWriter("*******************************");
-        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery: " + this.conn.getUserToken());
-        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
-        MyLogger.getInstance().myWriter("*******************************");
-        System.out.println("JdbcThinStatement --> myExecuteQuery: " + this.conn.getGroup_id());
-        System.out.println("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
-        System.out.println("*******************************");
+//        System.out.println("*******************************");
+//        MyLogger.getInstance().myWriter("*******************************");
+//        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery: " + this.conn.getUserToken());
+//        MyLogger.getInstance().myWriter("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
+//        MyLogger.getInstance().myWriter("*******************************");
+//        System.out.println("JdbcThinStatement --> myExecuteQuery: " + this.conn.getGroup_id());
+//        System.out.println("JdbcThinStatement --> myExecuteQuery 中的 sql:  " + sql);
+//        System.out.println("*******************************");
         if (this.conn.getGroup_id() >= 0L) {
             List<List<String>> myLst = reList(mySqlAst.getSmartSegment(sql));
             // 如果 mylst 中包括：loadFromNative 函数，则先执行这个函数来提交给服务器
@@ -221,16 +222,18 @@ public class JdbcThinStatement implements Statement {
 
     /** {@inheritDoc} */
     @Override public ResultSet executeQuery(String sql0) throws SQLException {
-        System.out.println("*******************************");
-        MyLogger.getInstance().myWriter("*******************************");
-        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery: " + this.conn.getUserToken());
-        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery 的 sql: " + sql0);
-        MyLogger.getInstance().myWriter("*******************************");
-        System.out.println("*******************************");
+//        System.out.println("*******************************");
+//        MyLogger.getInstance().myWriter("*******************************");
+//        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery: " + this.conn.getUserToken());
+//        MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery 的 sql: " + sql0);
+//        MyLogger.getInstance().myWriter("*******************************");
+//        System.out.println("*******************************");
         /**
          * 执行 sql
          * */
         String sql = myExecuteQuery(sql0);
+        //MyLogger.getInstance().myWriter("JdbcThinStatement --> executeQuery 处理后的 sql: " + sql);
+        X.println(sql);
         execute0(JdbcStatementType.SELECT_STATEMENT_TYPE, sql, null);
 
         ResultSet rs = getResultSet();

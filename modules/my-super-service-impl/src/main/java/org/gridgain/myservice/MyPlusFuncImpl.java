@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
+import org.apache.ignite.internal.util.typedef.X;
 import org.apache.ignite.scheduler.SchedulerFuture;
 import org.gridgain.plus.dml.MySmartScenes;
 import org.gridgain.plus.sql.MySuperSql;
@@ -33,7 +34,7 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
     }
 
     @Override
-    public Object myFun(String methodName, Object... ps) {
+    public Object myFun(String methodName, String... ps) {
         return MyPlusUtil.invokeFunc(Ignition.ignite(), methodName, ps);
     }
 
@@ -73,9 +74,9 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
 //    }
 
     @Override
-    public Object myInvoke(String methodName, Long group_id, Object... ps) {
-        List<Object> lst = new ArrayList<>();
-        for (Object m : ps)
+    public Object myInvoke(String methodName, Long group_id, String... ps) {
+        List<String> lst = new ArrayList<>();
+        for (String m : ps)
         {
             lst.add(m);
         }
@@ -83,9 +84,9 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
     }
 
     @Override
-    public Object myInvokeLink(String methodName, Long group_id, Object... ps) {
-        List<Object> lst = new ArrayList<>();
-        for (Object m : ps)
+    public Object myInvokeLink(String methodName, Long group_id, String... ps) {
+        List<String> lst = new ArrayList<>();
+        for (String m : ps)
         {
             lst.add(m);
         }

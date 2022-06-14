@@ -17,18 +17,18 @@ public interface IMyPlusFunc {
      * 1、必须有一个默认构造函数
      * 2、方法名不能重载
      * */
-    public Object myFun(final String methodName, final Object... ps);
+    public Object myFun(final String methodName, final String... ps);
 
     /**
      * 场景调用
      * */
-    public Object myInvoke(final String methodName, final Long group_id, final Object... ps);
+    public Object myInvoke(final String methodName, final Long group_id, final String... ps);
     //public Object myInvoke(final String methodName, final Object... ps);
 
     /**
      * 联接方法的调用
      * */
-    public Object myInvokeLink(final String methodName, final Long group_id, final Object... ps);
+    public Object myInvokeLink(final String methodName, final Long group_id, final String... ps);
 
     public String superSql(final byte[] var1, final byte[] var2);
     //public String superSql(final String userToken, final String sql);
