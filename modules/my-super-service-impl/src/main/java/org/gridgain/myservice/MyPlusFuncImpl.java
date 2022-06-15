@@ -14,9 +14,18 @@ import org.apache.ignite.internal.util.typedef.X;
 import org.apache.ignite.scheduler.SchedulerFuture;
 import org.gridgain.plus.dml.MySmartScenes;
 import org.gridgain.plus.sql.MySuperSql;
+import org.smart.service.MySmartScenesService;
 import org.tools.MyPlusUtil;
 
 public class MyPlusFuncImpl implements IMyPlusFunc {
+
+    private MySmartScenes mySmartScenes = null;
+
+    public MyPlusFuncImpl()
+    {
+        mySmartScenes = MySmartScenesService.getInstance().getMySmartScenes();
+    }
+
     @Override
     public Boolean hasConnPermission(String userToken) {
         return MySuperSql.getGroupId(Ignition.ignite(), userToken);
@@ -80,7 +89,7 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
         {
             lst.add(m);
         }
-        return MySmartScenes.invokeScenes(Ignition.ignite(), group_id, methodName, lst);
+        return this.mySmartScenes.invokeScenes(Ignition.ignite(), group_id, methodName, lst);
     }
 
     @Override
@@ -90,7 +99,7 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
         {
             lst.add(m);
         }
-        return MySmartScenes.invokeScenesLink(Ignition.ignite(), group_id, methodName, lst);
+        return mySmartScenes.invokeScenesLink(Ignition.ignite(), group_id, methodName, lst);
     }
 
 //    @Override
