@@ -478,6 +478,7 @@ public class FunctionAlias extends SchemaObjectBase {
                     return (Value) returnValue;
                 }
                 Value ret = DataType.convertToValue(session, returnValue, dataType);
+                //Value retVs = ret.convertTo(dataType);
                 return ret.convertTo(dataType);
             } finally {
                 session.setLastScopeIdentity(identity);

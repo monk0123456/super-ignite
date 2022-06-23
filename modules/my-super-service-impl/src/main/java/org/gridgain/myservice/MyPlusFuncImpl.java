@@ -15,6 +15,7 @@ import org.apache.ignite.scheduler.SchedulerFuture;
 import org.gridgain.plus.dml.MySmartScenes;
 import org.gridgain.plus.sql.MySuperSql;
 import org.smart.service.MySmartScenesService;
+import org.tools.MyConvertUtil;
 import org.tools.MyPlusUtil;
 
 public class MyPlusFuncImpl implements IMyPlusFunc {
@@ -99,7 +100,8 @@ public class MyPlusFuncImpl implements IMyPlusFunc {
         {
             lst.add(m);
         }
-        return mySmartScenes.invokeScenesLink(Ignition.ignite(), group_id, methodName, lst);
+        Object rs = mySmartScenes.invokeScenesLink(Ignition.ignite(), group_id, methodName, lst);
+        return MyConvertUtil.ConvertToString(rs);
     }
 
 //    @Override

@@ -41,13 +41,13 @@ public class MyInitFuncImpl implements IInitFunc {
             connMgr.executeStatement("PUBLIC", clause);
             System.out.println("自定义方法：my_invoke_link 初始化成功！");
 
-            clause = "CREATE ALIAS IF NOT EXISTS nth FOR \"org.tools.MyPlusFunc.nth\"";
-            connMgr.executeStatement("PUBLIC", clause);
-            System.out.println("自定义方法：nth 初始化成功！");
-
-            clause = "CREATE ALIAS IF NOT EXISTS first FOR \"org.tools.MyPlusFunc.first\"";
-            connMgr.executeStatement("PUBLIC", clause);
-            System.out.println("自定义方法：first 初始化成功！");
+//            clause = "CREATE ALIAS IF NOT EXISTS nth FOR \"org.tools.MyPlusFunc.nth\"";
+//            connMgr.executeStatement("PUBLIC", clause);
+//            System.out.println("自定义方法：nth 初始化成功！");
+//
+//            clause = "CREATE ALIAS IF NOT EXISTS first FOR \"org.tools.MyPlusFunc.first\"";
+//            connMgr.executeStatement("PUBLIC", clause);
+//            System.out.println("自定义方法：first 初始化成功！");
 
             clause = "CREATE ALIAS IF NOT EXISTS show_msg FOR \"org.tools.MyPlusFunc.showMsg\"";
             connMgr.executeStatement("PUBLIC", clause);
@@ -65,9 +65,9 @@ public class MyInitFuncImpl implements IInitFunc {
             connMgr.executeStatement("PUBLIC", clause);
             System.out.println("自定义方法：superSql 初始化成功！");
 
-            clause = "CREATE ALIAS IF NOT EXISTS my_line_binary FOR \"org.tools.MyPlusFunc.my_line_binary\"";
-            connMgr.executeStatement("PUBLIC", clause);
-            System.out.println("自定义方法：my_line_binary 初始化成功！（这个方法是用作测试的）");
+//            clause = "CREATE ALIAS IF NOT EXISTS my_line_binary FOR \"org.tools.MyPlusFunc.my_line_binary\"";
+//            connMgr.executeStatement("PUBLIC", clause);
+//            System.out.println("自定义方法：my_line_binary 初始化成功！（这个方法是用作测试的）");
 
             CacheConfiguration<?, ?> template_cfg = new CacheConfiguration<>("MyMeta_template*").setSqlSchema("MY_META");
             template_cfg.setCacheMode(CacheMode.REPLICATED);
@@ -109,13 +109,13 @@ public class MyInitFuncImpl implements IInitFunc {
             connMgr.executeStatement(schemaName, clause);
             System.out.println("自定义方法：my_invoke_link 初始化成功！");
 
-            clause = "CREATE ALIAS IF NOT EXISTS nth FOR \"org.tools.MyPlusFunc.nth\"";
-            connMgr.executeStatement(schemaName, clause);
-            System.out.println(schemaName + ": 自定义方法：nth 初始化成功！");
-
-            clause = "CREATE ALIAS IF NOT EXISTS first FOR \"org.tools.MyPlusFunc.first\"";
-            connMgr.executeStatement(schemaName, clause);
-            System.out.println(schemaName + ": 自定义方法：first 初始化成功！");
+//            clause = "CREATE ALIAS IF NOT EXISTS nth FOR \"org.tools.MyPlusFunc.nth\"";
+//            connMgr.executeStatement(schemaName, clause);
+//            System.out.println(schemaName + ": 自定义方法：nth 初始化成功！");
+//
+//            clause = "CREATE ALIAS IF NOT EXISTS first FOR \"org.tools.MyPlusFunc.first\"";
+//            connMgr.executeStatement(schemaName, clause);
+//            System.out.println(schemaName + ": 自定义方法：first 初始化成功！");
 
             clause = "CREATE ALIAS IF NOT EXISTS show_msg FOR \"org.tools.MyPlusFunc.showMsg\"";
             connMgr.executeStatement(schemaName, clause);
@@ -133,9 +133,9 @@ public class MyInitFuncImpl implements IInitFunc {
             connMgr.executeStatement(schemaName, clause);
             System.out.println(schemaName + ": 自定义方法：superSql 初始化成功！");
 
-            clause = "CREATE ALIAS IF NOT EXISTS my_line_binary FOR \"org.tools.MyPlusFunc.my_line_binary\"";
-            connMgr.executeStatement(schemaName, clause);
-            System.out.println(schemaName + ": 自定义方法：my_line_binary 初始化成功！（这个方法是用作测试的）");
+//            clause = "CREATE ALIAS IF NOT EXISTS my_line_binary FOR \"org.tools.MyPlusFunc.my_line_binary\"";
+//            connMgr.executeStatement(schemaName, clause);
+//            System.out.println(schemaName + ": 自定义方法：my_line_binary 初始化成功！（这个方法是用作测试的）");
         } catch (IgniteCheckedException var5) {
             var5.printStackTrace();
         }

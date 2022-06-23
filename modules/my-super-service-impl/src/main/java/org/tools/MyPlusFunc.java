@@ -55,24 +55,24 @@ public class MyPlusFunc implements Serializable {
      * 1、必须有一个默认构造函数
      * 2、方法名不能重载
      * */
-    public static Object myFun(final String methodName, final String... ps) {
-        return myPlusFunc.myFun(methodName, ps);
+    public static String myFun(final String methodName, final String... ps) {
+        return MyConvertUtil.ConvertToString(myPlusFunc.myFun(methodName, ps));
     }
 
     /**
      * 场景调用
      * */
-    public static Object myInvoke(final String methodName, final Long group_id, final String... ps)
+    public static String myInvoke(final String methodName, final Long group_id, final String... ps)
     {
-        return myPlusFunc.myInvoke(methodName, group_id, ps);
+        return MyConvertUtil.ConvertToString(myPlusFunc.myInvoke(methodName, group_id, ps));
     }
 
     /**
      * 联接函数的调用
      * */
-    public static Object myInvokeLink(final String methodName, final Long group_id, final String... ps)
+    public static String myInvokeLink(final String methodName, final Long group_id, final String... ps)
     {
-        return myPlusFunc.myInvokeLink(methodName, group_id, ps);
+        return MyConvertUtil.ConvertToString(myPlusFunc.myInvokeLink(methodName, group_id, ps));
     }
 
     public static String superSql(byte[] userToken, byte[] sql) {
